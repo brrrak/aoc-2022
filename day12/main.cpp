@@ -84,7 +84,7 @@ std::vector<Point> get_successors(const Point& pos, const Grid& grid, bool is_pa
         if (pos.row - 1 >= 0 && cur_height - grid[pos.row - 1][pos.col] < 2) {
             successors.push_back(Point{pos.row - 1, pos.col, pos.steps + 1});
         }
-        if (pos.col + 1 < cols && cur_height - grid[pos.row][pos.col + 1]< 2) {
+        if (pos.col + 1 < cols && cur_height - grid[pos.row][pos.col + 1] < 2) {
             successors.push_back(Point{pos.row, pos.col + 1, pos.steps + 1});
         }
         if (pos.col - 1 >= 0 && cur_height - grid[pos.row][pos.col - 1] < 2) {
@@ -96,7 +96,8 @@ std::vector<Point> get_successors(const Point& pos, const Grid& grid, bool is_pa
 }
 
 int solve1(const Grid& grid, const Point start, const Point end) {
-    auto cmp = [&end](Point& left, Point& right) {  
+    // A*
+    auto cmp = [&end](Point& left, Point& right) {
         return get_manhattan(left, end) > get_manhattan(right, end);
     };
     std::priority_queue<Point, std::vector<Point>, decltype(cmp)> fringe(cmp);
@@ -117,7 +118,6 @@ int solve1(const Grid& grid, const Point start, const Point end) {
                 fringe.push(child);
             }
         }
-
     }
 
     std::cerr << "Failure! Couldn't find a valid path!\n";
@@ -125,6 +125,7 @@ int solve1(const Grid& grid, const Point start, const Point end) {
 }
 
 int solve2(const Grid& grid, const Point start) {
+    // BFS
     std::queue<Point> fringe;
     fringe.push(start);
     std::unordered_set<Point, Point> explored;
